@@ -1,0 +1,172 @@
+substitutions:
+  dev_name: bseed_light_switch_4g
+
+esphome:
+  name: ${dev_name}
+bk72xx:
+  board: generic-bk7231n-qfn32-tuya
+logger:
+api:
+ota:
+  - platform: esphome
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: ${dev_name}
+captive_portal:
+    
+status_led:
+  pin:
+    number: P14
+    inverted: True
+
+button:
+  - platform: restart
+    id: ${dev_name}_restart
+    name: ${dev_name}_restart
+
+switch:   
+  - platform: template
+    name: ${dev_name}_child_lock
+    id: child_lock
+    icon: "mdi:account-lock"
+    entity_category: "config"
+    turn_on_action:
+      - switch.template.publish:
+          id: child_lock
+          state: true
+    turn_off_action:
+      - switch.template.publish:
+          id: child_lock
+          state: false
+
+output:
+  - platform: gpio
+    pin: P24
+    id: ${dev_name}_relay_1
+  - platform: gpio
+    pin: P26
+    id: ${dev_name}_relay_2
+  - platform: gpio
+    pin: P6
+    id: ${dev_name}_relay_3
+  - platform: gpio
+    pin: P7
+    id: ${dev_name}_relay_4
+
+  - platform: gpio
+    pin: P8
+    id: ${dev_name}_led_1
+  - platform: gpio
+    pin: P11
+    id: ${dev_name}_led_2
+  - platform: gpio
+    pin: P10
+    id: ${dev_name}_led_3
+  - platform: gpio
+    pin: P23
+    id: ${dev_name}_led_4
+
+    
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: P15
+      mode: INPUT_PULLUP
+      inverted: True
+    id: ${dev_name}_button_1
+    on_press:
+      - if:
+          condition:
+            switch.is_off: child_lock
+          then:
+            light.toggle: ${dev_name}_light_1
+
+  - platform: gpio
+    pin:
+      number: P17
+      mode: INPUT_PULLUP
+      inverted: True
+    id: ${dev_name}_button_2
+    on_press:
+      - if:
+          condition:
+            switch.is_off: child_lock
+          then:
+            light.toggle: ${dev_name}_light_2
+
+  - platform: gpio
+    pin:
+      number: P9
+      mode: INPUT_PULLUP
+      inverted: True
+    id: ${dev_name}_button_3
+    on_press:
+      - if:
+          condition:
+            switch.is_off: child_lock
+          then:
+            light.toggle: ${dev_name}_light_3
+
+  - platform: gpio
+    pin:
+      number: P28
+      mode: INPUT_PULLUP
+      inverted: True
+    id: ${dev_name}_button_4
+    on_press:
+      - if:
+          condition:
+            switch.is_off: child_lock
+          then:
+            light.toggle: ${dev_name}_light_4
+            
+light:
+  - platform: binary
+    name: ${dev_name}_light_1
+    id: ${dev_name}_light_1
+    output: ${dev_name}_relay_1
+    on_turn_on:
+      output.turn_on: ${dev_name}_led_1
+    on_turn_off:
+      output.turn_off: ${dev_name}_led_1
+
+  - platform: binary
+    name: ${dev_name}_light_2
+    id: ${dev_name}_light_2
+    output: ${dev_name}_relay_2
+    on_turn_on:
+      output.turn_on: ${dev_name}_led_2
+    on_turn_off:
+      output.turn_off: ${dev_name}_led_2
+
+  - platform: binary
+    name: ${dev_name}_light_3
+    id: ${dev_name}_light_3
+    output: ${dev_name}_relay_3
+    on_turn_on:
+      output.turn_on: ${dev_name}_led_3
+    on_turn_off:
+      output.turn_off: ${dev_name}_led_3
+
+  - platform: binary
+    name: ${dev_name}_light_4
+    id: ${dev_name}_light_4
+    output: ${dev_name}_relay_4
+    on_turn_on:
+      output.turn_on: ${dev_name}_led_4
+    on_turn_off:
+      output.turn_off: ${dev_name}_led_4
+      
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: ${dev_name}_ip
+      icon: "mdi:lan"
+    ssid:
+      name: ${dev_name}_ssid
+      icon: "mdi:wifi"
+    mac_address:
+      name: ${dev_name}_mac
+      icon: "mdi:lan"
