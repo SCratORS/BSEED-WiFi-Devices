@@ -9,6 +9,7 @@ bk72xx:
   board: generic-bk7231n-qfn32-tuya
 logger:
 api:
+  reboot_timeout: 0s
 ota:
   - platform: esphome
 wifi:
