@@ -13,7 +13,7 @@
 
 ![image](https://github.com/user-attachments/assets/d8513b9c-950b-46bb-a4d8-996a528d58d8)
 
-### Для 1- кнопочных
+### Для 1- и 3- кнопочных
 
 ![image](https://github.com/user-attachments/assets/6c334c09-ab34-4447-a8e1-557f49f40205)
 
